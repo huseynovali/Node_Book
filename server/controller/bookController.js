@@ -1,6 +1,7 @@
 import { Book } from "../models/bookModel.js";
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import fs from "fs"
 export const bookController = {
     getBook: (req, res) => {
         const userlimit = req.query.limit || 10;
@@ -40,7 +41,7 @@ export const bookController = {
             description: req.body.description,
             publishDate: req.body.publishDate,
             date: new Date(),
-            imgpath: file.name,
+            imgpath: path,
             writer: req.body.writer
         });
 
@@ -51,11 +52,25 @@ export const bookController = {
 
     },
     deleteBookById: (req, res) => {
-
+        console.log(req.body);
         const id = req.params.id;
-        Book.findByIdAndDelete()
+        Book.findByIdAndDelete(id)
+            .then((data) => {
+                fs.unlink(data.imgpath, function (err) {
+                    if (err && err.code == 'ENOENT') {
 
-            .then(() => res.send("delete"))
+                        console.info("File doesn't exist, won't remove it.");
+                    } else if (err) {
+
+                        console.error("Error occurred while trying to remove file");
+                    } else {
+                        res.send(`removed`);
+                    }
+                });
+            }
+
+
+            )
             .catch(err => res.status(404).json(err))
     },
 }

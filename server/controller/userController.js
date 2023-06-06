@@ -1,6 +1,5 @@
 import { User } from "../models/userModel.js";
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+
 
 export const userController = {
     getUser: (req, res) => {
@@ -20,7 +19,7 @@ export const userController = {
     },
     addUser: (req, res) => {
 
-        let newUser = new Writer({
+        let newUser = new User({
             firstname: req.body.firstname,
             lastname: req.body.lastname,
             brithday: req.body.brithday,

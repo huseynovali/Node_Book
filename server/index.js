@@ -22,6 +22,7 @@ app.use(
     preserveExtension: true,
   })
 );
+console.log(join(__dirname, 'img'));
 app.use(cors());
 app.use("/img", express.static(join(__dirname, 'img')));
 app.use("/countrys", countryRouter)
